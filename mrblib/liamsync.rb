@@ -1,7 +1,7 @@
+module Liamsync
+end
+
 def __main__(argv)
-  if argv[1] == "version"
-    puts "v#{Liamsync::VERSION}"
-  else
-    puts "Hello World"
-  end
+  $l = Logger.new(STDOUT)
+  Liamsync::Cli.new(argv).run
 end

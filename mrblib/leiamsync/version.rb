@@ -1,3 +1,3 @@
-module Liamsync
+module Leiamsync
   VERSION = "0.0.1"
 end

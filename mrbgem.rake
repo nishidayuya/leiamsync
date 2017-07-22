@@ -1,8 +1,8 @@
-MRuby::Gem::Specification.new('liamsync') do |spec|
+MRuby::Gem::Specification.new('leiamsync') do |spec|
   spec.license = "X11"
   spec.author = "Yuya.Nishida."
   spec.summary = "semi-realtime directory synchronization tool"
-  spec.bins = ["liamsync"]
+  spec.bins = ["leiamsync"]
 
   spec.add_dependency("mruby-exit", core: "mruby-exit")
   spec.add_dependency("mruby-mtest", mgem: "mruby-mtest")

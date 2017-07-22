@@ -1,7 +1,7 @@
-module Liamsync
+module Leiamsync
 end
 
 def __main__(argv)
   $l = Logger.new(STDOUT)
-  Liamsync::Cli.new(argv).run
+  Leiamsync::Cli.new(argv).run
 end

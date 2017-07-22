@@ -8,7 +8,7 @@ file :mruby do
   FileUtils.mv("mruby-#{MRUBY_VERSION}", "mruby")
 end
 
-APP_NAME=ENV["APP_NAME"] || "liamsync"
+APP_NAME=ENV["APP_NAME"] || "leiamsync"
 APP_ROOT=ENV["APP_ROOT"] || Dir.pwd
 # avoid redefining constants in mruby Rakefile
 mruby_root=File.expand_path(ENV["MRUBY_ROOT"] || "#{APP_ROOT}/mruby")

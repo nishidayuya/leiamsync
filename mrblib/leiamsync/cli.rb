@@ -1,7 +1,7 @@
-module Liamsync
+module Leiamsync
 end
 
-class Liamsync::Cli
+class Leiamsync::Cli
   def initialize(argv)
     @argv = argv
   end
@@ -10,7 +10,7 @@ class Liamsync::Cli
     from = @argv[1]
     to = @argv[2]
     if !to
-      STDERR.puts("USAGE: liamsync from_path to_path")
+      STDERR.puts("USAGE: leiamsync from_path to_path")
       exit(1)
     end
     watcher = LocalWatcher.new(from)

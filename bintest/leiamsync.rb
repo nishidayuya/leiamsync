@@ -2,7 +2,7 @@ require "pathname"
 require "timeout"
 require "time"
 
-BIN_PATH = File.join(File.dirname(__FILE__), "../mruby/bin/liamsync")
+BIN_PATH = File.join(File.dirname(__FILE__), "../mruby/bin/leiamsync")
 VERY_LONG_TIME_SEC = 5
 
 class Time
@@ -44,7 +44,7 @@ class BackgroundRunner
   end
 end
 
-def assert_liamsync(case_name, &block)
+def assert_leiamsync(case_name, &block)
   assert(case_name) do
     Dir.mktmpdir do |d|
       tmp_path = Pathname(d).expand_path
@@ -86,7 +86,7 @@ def assert_path_stat(expected_path, actual_path)
   end
 end
 
-assert_liamsync("sync local files") do |root1, root2|
+assert_leiamsync("sync local files") do |root1, root2|
   # new file
   path1 = root1 / "file1.txt"
   path2 = root2 / "file1.txt"

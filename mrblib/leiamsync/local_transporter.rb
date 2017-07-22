@@ -1,4 +1,4 @@
-class Liamsync::LocalTransporter
+class Leiamsync::LocalTransporter
   def initialize(path)
     @path = path
   end
@@ -8,7 +8,7 @@ class Liamsync::LocalTransporter
       $l.debug("LocalTransporter: fired #{path_info.inspect}")
       out_full_path = File.join(@path, path_info.path)
       out_full_tmp_path = File.join(File.dirname(out_full_path),
-                                    ".liamsync_tmp_" +
+                                    ".leiamsync_tmp_" +
                                     File.basename(out_full_path))
       case path_info.action
       when :modify

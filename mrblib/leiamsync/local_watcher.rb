@@ -1,4 +1,4 @@
-class Liamsync::LocalWatcher
+class Leiamsync::LocalWatcher
   def initialize(path)
     @event = UV::FS::Event.new
     @path = path
@@ -9,7 +9,7 @@ class Liamsync::LocalWatcher
     @event.start(@path, UV::FS::Event::RECURSIVE) do |path, event_type|
       $l.debug("LocalWatcher: fired #{event_type.inspect} #{path.inspect}")
       full_path = File.expand_path(path, @path)
-      if %r/(?:\A|\/)\.liamsync_tmp_/ =~ full_path
+      if %r/(?:\A|\/)\.leiamsync_tmp_/ =~ full_path
         $l.debug("LocalWatcher: skip #{event_type.inspect} #{path.inspect}")
       end
       if File.exist?(full_path)

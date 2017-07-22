@@ -7,12 +7,12 @@ class Leiamsync::LocalWatcher
   end
 
   def start(&block)
-    d("LocalWatcher: starting #{@path.inspect}")
+    d("starting #{@path.inspect}")
     @event.start(@path, UV::FS::Event::RECURSIVE) do |path, event_type|
-      d("LocalWatcher: fired #{event_type.inspect} #{path.inspect}")
+      d("fired #{event_type.inspect} #{path.inspect}")
       full_path = File.expand_path(path, @path)
       if %r/(?:\A|\/)\.leiamsync_tmp_/ =~ full_path
-        d("LocalWatcher: skip #{event_type.inspect} #{path.inspect}")
+        d("skip #{event_type.inspect} #{path.inspect}")
       end
       if File.exist?(full_path)
         stat = UV::FS.stat(full_path)
@@ -38,16 +38,16 @@ class Leiamsync::LocalWatcher
           path: path,
         }
       end
-      d("LocalWatcher: path_info: #{path_info.inspect}")
+      d("path_info: #{path_info.inspect}")
       block.call(OpenStruct.new(path_info))
     end
-    d("LocalWatcher: started #{@path.inspect}")
+    d("started #{@path.inspect}")
   end
 
   def stop
-    d("LocalWatcher: stopping #{@path.inspect}")
+    d("stopping #{@path.inspect}")
     @event.stop
-    d("LocalWatcher: stopped #{@path.inspect}")
+    d("stopped #{@path.inspect}")
   end
 
   def open_file(path, flags, mode)

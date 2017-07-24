@@ -20,9 +20,12 @@ class Leiamsync::Cli
       STDERR.puts("USAGE: leiamsync from_path to_path")
       exit(1)
     end
-    watcher = LocalWatcher.new(from)
     transporter = LocalTransporter.new(to)
-    transporter.start(watcher)
+    watcher = LocalWatcher.new(from)
+    watcher.start do |path_info|
+      transporter.execute(watcher, path_info)
+    end
+
     d("start UV loop")
     UV.run
   end

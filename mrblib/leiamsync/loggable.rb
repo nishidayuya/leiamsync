@@ -19,4 +19,8 @@ module Leiamsync::Loggable
   def d(*args)
     Leiamsync::Loggable.logger.debug(Leiamsync::Loggable.format_message(*args))
   end
+
+  def w(*args)
+    Leiamsync::Loggable.logger.warn(Leiamsync::Loggable.format_message(*args))
+  end
 end

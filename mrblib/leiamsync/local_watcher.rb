@@ -31,23 +31,14 @@ class Leiamsync::LocalWatcher
           raise "unknown file type: #{'%06o' % stat.mode} #{full_path.inspect}"
         end
         # TODO: new directory: sub_watchers?
-        path_info = {
-          action: :modify,
-          path: path,
-          type: type,
-          mode: stat.mode & S_IFMT ^ stat.mode,
-          atime: [stat.atim.tv_sec, stat.atim.tv_usec],
-          mtime: [stat.mtim.tv_sec, stat.mtim.tv_usec],
-          content: content,
-        }
+        action = Leiamsync::ModifyAction.new(path, type,
+                                             stat.mode & S_IFMT ^ stat.mode,
+                                             stat.atim, stat.mtim, content)
       else
-        path_info = {
-          action: :remove,
-          path: path,
-        }
+        action = Leiamsync::RemoveAction.new(path)
       end
-      d("path_info: #{path_info.inspect}")
-      block.call(OpenStruct.new(path_info))
+      d("created", action: action)
+      block.call(action)
     end
     d("started #{@path.inspect}")
   end

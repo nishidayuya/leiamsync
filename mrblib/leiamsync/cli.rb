@@ -14,8 +14,8 @@ class Leiamsync::Cli
     end
     transporter = LocalTransporter.new(to)
     watcher = LocalWatcher.new(from)
-    watcher.start do |path_info|
-      transporter.execute(watcher, path_info)
+    watcher.start do |action|
+      transporter.execute(action)
     end
 
     d("start UV loop")

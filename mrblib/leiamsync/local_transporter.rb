@@ -54,21 +54,4 @@ class Leiamsync::LocalTransporter
       raise "unknown action: #{path_info.inspect}"
     end
   end
-
-  def stop
-  end
-
-  def apply(file_info)
-  end
-
-  private
-
-  def prepare
-  end
-
-  def read
-  end
-
-  def write
-  end
 end

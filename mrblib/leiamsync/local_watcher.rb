@@ -16,10 +16,18 @@ class Leiamsync::LocalWatcher
       end
       if File.exist?(full_path)
         stat = UV::FS.stat(full_path)
-        type = stat.mode & S_IFREG > 0 ? :file :
-                 stat.mode & S_IFDIR > 0 ? :directory :
-                   nil
-        if !type
+        if stat.mode & S_IFREG > 0
+          type = :file
+          f = UV::FS.open(full_path, UV::FS::O_RDONLY, UV::FS::S_IREAD)
+          begin
+            content = f.read
+          ensure
+            f.close
+          end
+        elsif stat.mode & S_IFDIR > 0
+          type = :directory
+          content = nil
+        else
           raise "unknown file type: #{'%06o' % stat.mode} #{full_path.inspect}"
         end
         # TODO: new directory: sub_watchers?
@@ -28,9 +36,9 @@ class Leiamsync::LocalWatcher
           path: path,
           type: type,
           mode: stat.mode & S_IFMT ^ stat.mode,
-          size: stat.size,
           atime: [stat.atim.tv_sec, stat.atim.tv_usec],
           mtime: [stat.mtim.tv_sec, stat.mtim.tv_usec],
+          content: content,
         }
       else
         path_info = {
@@ -48,16 +56,6 @@ class Leiamsync::LocalWatcher
     d("stopping #{@path.inspect}")
     @event.stop
     d("stopped #{@path.inspect}")
-  end
-
-  def open_file(path, flags, mode)
-    full_path = File.expand_path(path, @path)
-    d("opening #{full_path.inspect}")
-    return UV::FS.open(full_path, flags, mode)
-  end
-
-  def close_file(file)
-    file.close
   end
 
   private

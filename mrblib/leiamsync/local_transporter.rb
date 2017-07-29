@@ -13,22 +13,15 @@ class Leiamsync::LocalTransporter
                                   File.basename(out_full_path))
     case path_info.action
     when :modify
-      d("opening #{path_info.path}")
-      in_file = watcher.open_file(path_info.path, UV::FS::O_RDONLY,
-                                  UV::FS::S_IREAD)
+      d("opening #{out_full_tmp_path}")
       out_tmp_file = UV::FS.open(out_full_tmp_path,
                                  UV::FS::O_CREAT | UV::FS::O_WRONLY,
                                  path_info.mode)
-      d("transferring #{path_info.path} => #{out_full_tmp_path}")
-      d("doing sendfile #{path_info.size} bytes")
-      UV::FS.sendfile(out_tmp_file, in_file, 0, path_info.size)
-      d("done sendfile #{path_info.size} bytes")
+      d("writing #{out_full_tmp_path}")
+      out_tmp_file.write(path_info.content)
       d("closing #{out_full_tmp_path}")
       out_tmp_file.close
       d("closed #{out_full_tmp_path}")
-      d("closing #{path_info.path}")
-      watcher.close_file(in_file)
-      d("closed #{path_info.path}")
       atime = Time.at(*path_info.atime)
       mtime = Time.at(*path_info.mtime)
       d("setting atime and mtime")

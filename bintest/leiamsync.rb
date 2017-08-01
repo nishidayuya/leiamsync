@@ -112,4 +112,10 @@ assert_leiamsync("sync local files") do |root1, root2|
     "Wrote whole file.\n" == path2.read
   }
   assert_path_stat(path1, path2)
+
+  # delete file
+  path1.delete
+  assert_retried {
+    !path2.exist?
+  }
 end

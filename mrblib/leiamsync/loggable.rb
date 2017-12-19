@@ -12,7 +12,7 @@ module Leiamsync::Loggable
           "#{k}=#{v.inspect}"
         }.join(" ")
       end
-      return filename_and_line_number + ":" + message + extra_s
+      return filename_and_line_number + ": " + message + extra_s
     end
   end
 

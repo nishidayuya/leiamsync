@@ -46,17 +46,16 @@ end
 
 def assert_leiamsync(case_name, &block)
   assert(case_name) do
-    Dir.mktmpdir do |d|
-      tmp_path = Pathname(d).expand_path
-      root1 = tmp_path / "1"
-      root2 = tmp_path / "2"
-      root1.mkpath
-      root2.mkpath
-      BackgroundRunner.run(BIN_PATH, root1.to_s, root2.to_s) do
-        sleep(0.1) # TODO: wait for wakeup
-        block.call(root1, root2)
-      end
+    tmp_path = Pathname(Dir.mktmpdir).expand_path
+    root1 = tmp_path / "1"
+    root2 = tmp_path / "2"
+    (root1 / "sub_directory").mkpath
+    (root2 / "sub_directory").mkpath
+    BackgroundRunner.run(BIN_PATH, root1.to_s, root2.to_s) do
+      sleep(0.1) # TODO: wait for wakeup
+      block.call(root1, root2)
     end
+    tmp_path.rmtree # do not remove if assertion failed
   end
 end
 

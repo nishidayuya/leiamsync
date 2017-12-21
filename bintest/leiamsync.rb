@@ -59,8 +59,8 @@ def assert_leiamsync(case_name, &block)
   end
 end
 
-def assert_retried
-  assert_nothing_raised do
+def assert_retried(message: "")
+  assert_nothing_raised(message) do
     Timeout.timeout(VERY_LONG_TIME_SEC) do
       while !yield
         sleep(0.1)
@@ -90,7 +90,7 @@ assert_leiamsync("sync local files") do |root1, root2|
   path1 = root1 / "file1.txt"
   path2 = root2 / "file1.txt"
   path1.write("This is new file.")
-  assert_retried {
+  assert_retried(message: "create file") {
     path2.exist? && "This is new file." == path2.read
   }
   assert_path_stat(path1, path2)
@@ -100,21 +100,21 @@ assert_leiamsync("sync local files") do |root1, root2|
     f.puts
     f.puts("This is appended line.")
   end
-  assert_retried {
+  assert_retried(message: "append file") {
     "This is new file.\nThis is appended line.\n" == path2.read
   }
   assert_path_stat(path1, path2)
 
   # write whole file
   path1.write("Wrote whole file.\n")
-  assert_retried {
+  assert_retried(message: "modify file") {
     "Wrote whole file.\n" == path2.read
   }
   assert_path_stat(path1, path2)
 
   # delete file
   path1.delete
-  assert_retried {
+  assert_retried(message: "delete file") {
     !path2.exist?
   }
 end

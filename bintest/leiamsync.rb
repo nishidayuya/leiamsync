@@ -85,10 +85,7 @@ def assert_path_stat(expected_path, actual_path)
   end
 end
 
-assert_leiamsync("sync local files") do |root1, root2|
-  # new file
-  path1 = root1 / "file1.txt"
-  path2 = root2 / "file1.txt"
+def assert_create_update_delete_file(path1, path2)
   path1.write("This is new file.")
   assert_retried(message: "create file") {
     path2.exist? && "This is new file." == path2.read
@@ -117,4 +114,16 @@ assert_leiamsync("sync local files") do |root1, root2|
   assert_retried(message: "delete file") {
     !path2.exist?
   }
+end
+
+assert_leiamsync("sync local files") do |root1, root2|
+  # in root
+  path1 = root1 / "file1.txt"
+  path2 = root2 / "file1.txt"
+  assert_create_update_delete_file(path1, path2)
+
+  # in sub directory
+  path1 = root1 / "sub_directory/file2.txt"
+  path2 = root2 / "sub_directory/file2.txt"
+  assert_create_update_delete_file(path1, path2)
 end
